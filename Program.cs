@@ -1,36 +1,20 @@
-﻿using System.Text;
-using System;
-using System.IO;
-using System.Text;
-using System.Collections;
-
-
-namespace Solver
+﻿namespace Solver
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            List<string> list = new List<string>();
+            IWordProvider wordDictionary = new WordDictionary();
 
-            Console.WriteLine(Environment.CurrentDirectory);
-            Console.WriteLine(Environment.SystemDirectory);
-            using (var stream = new StreamReader("../../../word_list.txt", Encoding.UTF8))
-            {
-                string line;
-                while ((line = stream.ReadLine()) != null)
-                {
-                    if (line.Length == 5)
-                    {
-                        list.Add(line);
-                    }
-                }
-            }
+            Console.WriteLine("Start");
 
-            foreach (var word in list)
+            var wordList = wordDictionary.LoadWordList();
+            foreach (var word in wordList)
             {
                 Console.Write(word + ",");
             }
+            
+            Console.Write("\n");
 
             Console.WriteLine("End");
         }
