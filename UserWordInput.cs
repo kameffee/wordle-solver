@@ -2,6 +2,13 @@ namespace Solver;
 
 public class UserWordInput
 {
+    private readonly ILogger _logger;
+
+    public UserWordInput(ILogger logger)
+    {
+        _logger = logger;
+    }
+
     /// <summary>
     /// 施行したワードの入力待ち
     /// </summary>
@@ -11,14 +18,13 @@ public class UserWordInput
         string? input = "";
         while (string.IsNullOrEmpty(input) || input.Length != 5)
         {
-            Console.WriteLine($"施行した5文字のワード入力してください。");
+            
+            _logger.Log($"施行した5文字のワード入力してください。");
             input = Console.ReadLine();
 
             if (string.IsNullOrEmpty(input) || input.Length != 5)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("ERROR: 入力エラー");
-                Console.ForegroundColor = ConsoleColor.White;
+                _logger.LogError("ERROR: 入力エラー");
             }
         }
 
@@ -35,14 +41,12 @@ public class UserWordInput
         string? input = "";
         while (string.IsNullOrEmpty(input) || input.Length != 5)
         {
-            Console.WriteLine($"施行した5文字のワード入力してください。");
+            _logger.Log($"施行した5文字のワード入力してください。");
             input = Console.ReadLine();
 
             if (string.IsNullOrEmpty(input) || input.Length != 5)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("ERROR: 入力エラー");
-                Console.ForegroundColor = ConsoleColor.White;
+                _logger.LogError("ERROR: 入力エラー");
             }
         }
 

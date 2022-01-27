@@ -4,10 +4,11 @@ class Program
 {
     public static void Main(string[] args)
     {
+        ILogger logger = new Logger();
         IWordProvider wordDictionary = new WordDictionary();
-        UserWordInput userWordInput = new UserWordInput();
+        UserWordInput userWordInput = new UserWordInput(logger);
 
-        Console.WriteLine("Start");
+        logger.Log("Start");
 
         var wordList = wordDictionary.LoadWordList();
         foreach (var word in wordList)
@@ -15,19 +16,21 @@ class Program
             Console.Write(word + ",");
         }
 
+        logger.Log(string.Join(',', wordList));
+
         Console.Write("\n");
 
         var inputWord = userWordInput.WaitWordInput();
-        Console.WriteLine($"InputWord: {inputWord}");
+        logger.Log($"InputWord: {inputWord}");
 
         var inputResult = userWordInput.WaitResultInput();
 
         // 確認
-        Console.WriteLine($"--------");
-        Console.WriteLine($"{inputWord}");
-        Console.WriteLine($"{inputResult}");
-        Console.WriteLine($"--------");
+        logger.Log($"--------");
+        logger.Log($"{inputWord}");
+        logger.Log($"{inputResult}");
+        logger.Log($"--------");
 
-        Console.WriteLine("End");
+        logger.Log("End");
     }
 }
