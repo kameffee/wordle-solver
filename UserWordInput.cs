@@ -18,7 +18,6 @@ public class UserWordInput
         string? input = "";
         while (string.IsNullOrEmpty(input) || input.Length != 5)
         {
-            
             _logger.Log($"施行した5文字のワード入力してください。");
             input = Console.ReadLine();
 
@@ -39,7 +38,7 @@ public class UserWordInput
         Console.WriteLine($"施行した結果を入力してください。 correct:[g],  wrong:[y], not: [n]");
 
         string? input = "";
-        while (string.IsNullOrEmpty(input) || input.Length != 5)
+        while (string.IsNullOrEmpty(input) || input.Length != 5 || !Validate(input))
         {
             _logger.Log($"施行した5文字のワード入力してください。");
             input = Console.ReadLine();
@@ -48,8 +47,29 @@ public class UserWordInput
             {
                 _logger.LogError("ERROR: 入力エラー");
             }
+            else if (!Validate(input))
+            {
+                _logger.LogError("ERROR: 入力エラー. 次のいずれかを5つ入力してください。[g,y,n]");
+            }
         }
 
         return input;
+    }
+
+    // 許容されるコマンド文字
+    private readonly char[] _commandChars = { 'g', 'y', 'n' };
+
+    private bool Validate(string input)
+    {
+        foreach (var inputChar in input.ToCharArray())
+        {
+            // 入力コマンドチェック
+            if (_commandChars.All(command => command != inputChar))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
