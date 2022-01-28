@@ -1,31 +1,17 @@
-using System.Text;
-
 namespace Solver;
 
 public class WordDictionary : IWordProvider
 {
-    private readonly string _path;
 
-    public WordDictionary(string path)
+    private readonly string[] _words;
+    
+    public WordDictionary(WordLoader wordLoader)
     {
-        _path = path;
+        _words = wordLoader.Load();
     }
 
-    public string[] LoadWordList()
+    public string[] All()
     {
-        var list = new List<string>();
-        using (var stream = new StreamReader(_path, Encoding.UTF8))
-        {
-            string line;
-            while ((line = stream.ReadLine()) != null)
-            {
-                if (line.Length == 5)
-                {
-                    list.Add(line);
-                }
-            }
-        }
-
-        return list.ToArray();
+        return _words;
     }
 }

@@ -12,19 +12,14 @@ class Program
         }
 
         ILogger logger = new Logger();
-        IWordProvider wordDictionary = new WordDictionary(path);
+        IWordProvider wordDictionary = new WordDictionary(new WordLoader(path));
         UserWordInput userWordInput = new UserWordInput(logger);
         ResultOutput resultOutput = new ResultOutput();
 
         logger.Log("Start");
 
-        var wordList = wordDictionary.LoadWordList();
-        foreach (var word in wordList)
-        {
-            Console.Write(word + ",");
-        }
-
-        logger.Log(string.Join(',', wordList));
+        var wordList = wordDictionary.All();
+        // logger.Log(string.Join(',', wordList));
 
         Console.Write("\n");
 
