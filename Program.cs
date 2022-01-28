@@ -4,8 +4,15 @@ class Program
 {
     public static void Main(string[] args)
     {
+        string path = "../../../word_list.txt";
+
+        if (args.Length > 0)
+        {
+            path = args[0];
+        }
+
         ILogger logger = new Logger();
-        IWordProvider wordDictionary = new WordDictionary();
+        IWordProvider wordDictionary = new WordDictionary(path);
         UserWordInput userWordInput = new UserWordInput(logger);
         ResultOutput resultOutput = new ResultOutput();
 
@@ -22,7 +29,7 @@ class Program
         Console.Write("\n");
 
         var inputWord = userWordInput.WaitWordInput();
-        logger.Log($"InputWord: {inputWord}");
+        logger.Log("");
 
         var inputResult = userWordInput.WaitResultInput();
 

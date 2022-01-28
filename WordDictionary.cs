@@ -4,10 +4,17 @@ namespace Solver;
 
 public class WordDictionary : IWordProvider
 {
+    private readonly string _path;
+
+    public WordDictionary(string path)
+    {
+        _path = path;
+    }
+
     public string[] LoadWordList()
     {
         var list = new List<string>();
-        using (var stream = new StreamReader("../../../word_list.txt", Encoding.UTF8))
+        using (var stream = new StreamReader(_path, Encoding.UTF8))
         {
             string line;
             while ((line = stream.ReadLine()) != null)
