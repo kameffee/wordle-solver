@@ -18,7 +18,7 @@ public class UserWordInput
         string? input = "";
         while (string.IsNullOrEmpty(input) || input.Length != 5)
         {
-            _logger.Log($"施行した5文字のワード入力してください。");
+            _logger.Log($"試行した5文字のワード入力してください。");
             input = Console.ReadLine();
 
             if (string.IsNullOrEmpty(input) || input.Length != 5)
@@ -35,12 +35,10 @@ public class UserWordInput
     /// </summary>
     public string WaitResultInput()
     {
-        Console.WriteLine($"施行した結果を入力してください。 correct:[2],  wrong:[1], not: [0]");
-
         string? input = "";
         while (string.IsNullOrEmpty(input) || input.Length != 5 || !Validate(input))
         {
-            _logger.Log($"施行した5文字のワード入力してください。");
+            _logger.Log($"試行した結果を入力してください。 correct:[2],  wrong:[1], not: [0]");
             input = Console.ReadLine();
 
             if (string.IsNullOrEmpty(input) || input.Length != 5)
@@ -49,7 +47,7 @@ public class UserWordInput
             }
             else if (!Validate(input))
             {
-                _logger.LogError("ERROR: 入力エラー. 次のいずれかを5つ入力してください。[g,y,n]");
+                _logger.LogError("ERROR: 入力エラー. 次のいずれかを5つ入力してください。[0,1,2]");
             }
         }
 
