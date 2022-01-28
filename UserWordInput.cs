@@ -35,7 +35,7 @@ public class UserWordInput
     /// </summary>
     public string WaitResultInput()
     {
-        Console.WriteLine($"施行した結果を入力してください。 correct:[g],  wrong:[y], not: [n]");
+        Console.WriteLine($"施行した結果を入力してください。 correct:[2],  wrong:[1], not: [0]");
 
         string? input = "";
         while (string.IsNullOrEmpty(input) || input.Length != 5 || !Validate(input))
@@ -57,7 +57,7 @@ public class UserWordInput
     }
 
     // 許容されるコマンド文字
-    private readonly char[] _commandChars = { 'g', 'y', 'n' };
+    private readonly char[] _commandChars = { '2', '1', '0' };
 
     private bool Validate(string input)
     {
