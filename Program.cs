@@ -7,6 +7,7 @@ class Program
         ILogger logger = new Logger();
         IWordProvider wordDictionary = new WordDictionary();
         UserWordInput userWordInput = new UserWordInput(logger);
+        ResultOutput resultOutput = new ResultOutput();
 
         logger.Log("Start");
 
@@ -27,8 +28,8 @@ class Program
 
         // 確認
         logger.Log($"--------");
-        logger.Log($"{inputWord}");
-        logger.Log($"{inputResult}");
+        resultOutput.Output(inputWord.ToCharArray(), inputResult.ToCharArray());
+        Console.Write("\n");
         logger.Log($"--------");
 
         logger.Log("End");
