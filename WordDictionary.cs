@@ -14,4 +14,9 @@ public class WordDictionary : IWordProvider
     {
         return _words;
     }
+
+    public bool Exists(string word)
+    {
+        return _words.Any(s => s.Equals(word));
+    }
 }

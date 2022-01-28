@@ -13,12 +13,13 @@ class Program
 
         ILogger logger = new Logger();
         IWordProvider wordDictionary = new WordDictionary(new WordLoader(path));
-        UserWordInput userWordInput = new UserWordInput(logger);
+        UserWordInput userWordInput = new UserWordInput(wordDictionary, logger);
         ResultOutput resultOutput = new ResultOutput();
 
         logger.Log("Start");
 
         var wordList = wordDictionary.All();
+        
         // logger.Log(string.Join(',', wordList));
 
         Console.Write("\n");
