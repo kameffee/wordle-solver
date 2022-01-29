@@ -1,4 +1,6 @@
-﻿namespace Solver;
+﻿using System.Globalization;
+
+namespace Solver;
 
 class Program
 {
@@ -28,12 +30,13 @@ class Program
             var inputWord = userWordInput.WaitWordInput(i + 1);
             logger.Log("");
 
-            var inputResult = userWordInput.WaitResultInput();
+            var inputResult = userWordInput.WaitResultInput().ToCharArray();
             CharacterResult[] characterResults = new CharacterResult[5];
             for (var i1 = 0; i1 < inputWord.Length; i1++)
             {
                 char c = inputWord[i1];
-                ResultType type = (ResultType)inputResult[i1];
+                char num = inputResult[i1];
+                ResultType type = (ResultType)int.Parse(num.ToString(), NumberStyles.None);
                 characterResults[i1] = new CharacterResult(i1, type, c);
             }
 
@@ -41,7 +44,7 @@ class Program
 
             // 確認
             logger.Log($"[{i}]:");
-            resultOutput.Output(inputWord.ToCharArray(), inputResult.ToCharArray());
+            resultOutput.Output(inputWord.ToCharArray(), inputResult);
             Console.Write("\n");
             logger.Log($"----候補----");
             var condidateWords = candidateCalculator.Calculate(conditionData);

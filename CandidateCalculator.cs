@@ -15,25 +15,35 @@ public class CandidateCalculator
     public string[] Calculate(ConditionData conditionData)
     {
         char[] correctChars = new char[5];
-        char[] wrongChars;
 
-        var wordResult = conditionData.Results.First();
-        var characterResult = wordResult.CharacterResults.Where(result => result.Result.HasFlag(ResultType.Correct));
+        var wordResult = conditionData.Results;
+        var correctResults = wordResult
+            .SelectMany(result => result.CharacterResults)
+            .Where(result => result.Result == ResultType.Correct)
+            .Distinct();
 
-        foreach (var result in characterResult)
+        foreach (var result in correctResults)
         {
             correctChars[result.Index] = result.Character;
         }
 
-        wrongChars = wordResult.CharacterResults
-            .Where(result => result.Result.HasFlag(ResultType.Wrong))
+        char[] wrongChars = wordResult
+            .SelectMany(result => result.CharacterResults)
+            .Where(result => result.Result == ResultType.Wrong)
             .Select(result => result.Character)
+            .Distinct()
             .ToArray();
 
-        char[] notChars = wordResult.CharacterResults
-            .Where(result => result.Result == (ResultType.Not))
+        Console.WriteLine("Wrond: " + string.Join(',', wrongChars));
+
+        char[] notChars = wordResult
+            .SelectMany(result => result.CharacterResults)
+            .Where(result => result.Result == ResultType.Not)
             .Select(result => result.Character)
+            .Distinct()
             .ToArray();
+
+        Console.WriteLine("Not: " + string.Join(',', notChars));
 
         return _wordProvider.All()
             .Where(word =>
@@ -53,7 +63,7 @@ public class CandidateCalculator
                         return false;
                     }
                 }
-                
+
                 if (notChars.Any())
                 {
                     // 含まれてはいけない文字

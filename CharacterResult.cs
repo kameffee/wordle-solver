@@ -1,6 +1,6 @@
 namespace Solver;
 
-public struct CharacterResult
+public class CharacterResult
 {
     public int Index => _index;
     public ResultType Result => _result;
