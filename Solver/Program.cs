@@ -6,7 +6,7 @@ class Program
 {
     public static void Main(string[] args)
     {
-        string path = "../../../word_list.txt";
+        string path = "../../../../word_list.txt";
 
         if (args.Length > 0)
         {
