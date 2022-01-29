@@ -16,6 +16,7 @@ class Program
         ILogger logger = new Logger();
         IWordProvider wordDictionary = new WordDictionary(new WordLoader(path));
         UserWordInput userWordInput = new UserWordInput(wordDictionary, logger);
+        UserResultInput userResultInput = new UserResultInput(logger);
         ResultOutput resultOutput = new ResultOutput();
         ConditionData conditionData = new ConditionData();
         CandidateCalculator candidateCalculator = new CandidateCalculator(wordDictionary);
@@ -30,7 +31,7 @@ class Program
             var inputWord = userWordInput.WaitWordInput(i + 1);
             logger.Log("");
 
-            var inputResult = userWordInput.WaitResultInput().ToCharArray();
+            var inputResult = userResultInput.WaitResultInput().ToCharArray();
             CharacterResult[] characterResults = new CharacterResult[5];
             for (var i1 = 0; i1 < inputWord.Length; i1++)
             {
