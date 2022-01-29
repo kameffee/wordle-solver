@@ -32,12 +32,16 @@ class Program
 
         Console.Write("\n");
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 6; i++)
         {
+            // ワード入力
             var inputWord = userWordInput.WaitWordInput(i + 1);
             logger.Log("");
 
+            // 試行結果入力
             var inputResult = userResultInput.WaitResultInput().ToCharArray();
+
+            // 試行結果を作成
             CharacterResult[] characterResults = new CharacterResult[5];
             for (var i1 = 0; i1 < inputWord.Length; i1++)
             {
