@@ -13,6 +13,12 @@ class Program
             path = args[0];
         }
 
+        if (!File.Exists(path))
+        {
+            Console.WriteLine("ERROR: ファイルが存在しません.");
+            return;
+        }
+
         ILogger logger = new Logger();
         IWordProvider wordDictionary = new WordDictionary(new WordLoader(path));
         UserWordInput userWordInput = new UserWordInput(wordDictionary, logger);
