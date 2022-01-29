@@ -67,7 +67,9 @@ public class CandidateCalculator
                 if (notChars.Any())
                 {
                     // 含まれてはいけない文字
-                    if (target.Any(targetChar => notChars.Any(notChar => notChar == targetChar)))
+                    if (target
+                        .Where(targetChar => correctChars.All(correct => correct != targetChar))
+                        .Any(targetChar => notChars.Any(notChar => notChar == targetChar)))
                     {
                         return false;
                     }
@@ -75,17 +77,11 @@ public class CandidateCalculator
 
                 if (wrongChars.Any())
                 {
-                    for (int i = 0; i < 5; i++)
+                    // 含まれていなければいけない文字がなければ
+                    if (!wrongChars.All(wrongChar => target.Any(c => c == wrongChar)))
                     {
-                        char targetChar = target[i];
-                        // どこかに含まれる文字に当てはまるか 
-                        if (wrongChars.Any(c => c == targetChar))
-                        {
-                            return true;
-                        }
+                        return false;
                     }
-
-                    return false;
                 }
 
 
