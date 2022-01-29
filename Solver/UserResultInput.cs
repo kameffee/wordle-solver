@@ -21,18 +21,14 @@ public class UserResultInput
     public string WaitResultInput()
     {
         string? input = "";
-        while (string.IsNullOrEmpty(input) || input.Length != 5 || !Validate(input))
+        while (true)
         {
             _logger.Log($"試行した結果を入力してください。 correct:[2],  wrong:[1], not: [0]");
             input = Console.ReadLine();
 
-            if (string.IsNullOrEmpty(input) || input.Length != 5)
+            if (Validate(input))
             {
-                _logger.LogError("ERROR: 入力エラー");
-            }
-            else if (!Validate(input))
-            {
-                _logger.LogError("ERROR: 入力エラー. 次のいずれかを5つ入力してください。[0,1,2]");
+                break;
             }
         }
 
@@ -41,11 +37,24 @@ public class UserResultInput
 
     public bool Validate(string input)
     {
+        if (string.IsNullOrEmpty(input))
+        {
+            _logger.LogError("ERROR: 入力エラー. なにも入力されていません。");
+            return false;
+        }
+
+        if (input.Length != 5)
+        {
+            _logger.LogError("ERROR: 入力エラー.");
+            return false;
+        }
+
         foreach (var inputChar in input.ToCharArray())
         {
             // 入力コマンドチェック
             if (_commandChars.All(command => command != inputChar))
             {
+                _logger.LogError("ERROR: 入力エラー. 次のいずれかを5つ入力してください。[0,1,2]");
                 return false;
             }
         }
