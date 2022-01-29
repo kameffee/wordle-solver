@@ -18,26 +18,41 @@ public class UserWordInput
     {
         // 入力待ち
         string? input = "";
-        while (string.IsNullOrEmpty(input) || input.Length != 5 || !ValidateWord(input))
+        while (true)
         {
             _logger.Log($"{phase}回目に試行した5文字のワード入力してください。");
             input = Console.ReadLine();
 
-            if (string.IsNullOrEmpty(input) || input.Length != 5)
+            if (Validate(input))
             {
-                _logger.LogError("ERROR: 入力エラー");
+                break;
             }
-            else if (!ValidateWord(input))
-            {
-                _logger.LogError("ERROR: 存在しないワード");
-            }
+           
         }
 
         return input;
     }
 
-    private bool ValidateWord(string word)
+    public bool Validate(string word)
     {
-        return _wordProvider.Exists(word);
+        if (string.IsNullOrEmpty(word))
+        {
+            _logger.LogError("ERROR: 入力エラー. なにも入力されていません。");
+            return false;
+        }
+
+        if (word.Length != 5)
+        {
+            _logger.LogError("ERROR: 入力エラー. アルファベット5文字で入力してください。");
+            return false;
+        }
+
+        if (!_wordProvider.Exists(word))
+        {
+            _logger.LogError("ERROR: 存在しないワード");
+            return false;
+        }
+
+        return true;
     }
 }
