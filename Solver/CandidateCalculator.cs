@@ -18,7 +18,7 @@ public class CandidateCalculator
     {
         char[] correctChars = new char[5];
         List<char>[] notList = new List<char>[5];
-        
+
         for (var i = 0; i < notList.Length; i++)
         {
             notList[i] = new List<char>();
@@ -59,11 +59,20 @@ public class CandidateCalculator
             .Select(result => result.Character)
             .Distinct()
             .ToArray();
-        
+
         // 全ての箇所にNotとして登録
         for (var i = 0; i < notList.Length; i++)
         {
-            notList[i].AddRange(notCharArray);
+            foreach (var c in notCharArray)
+            {
+                // 確定になっている場合はNotに入れない
+                if (correctChars[i] == c)
+                {
+                    continue;
+                }
+
+                notList[i].Add(c);
+            }
         }
 
         _logger.Log("Not: " + string.Join(',', notCharArray));

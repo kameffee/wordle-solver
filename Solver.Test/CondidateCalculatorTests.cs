@@ -16,7 +16,7 @@ public class CondidateCalculatorTests
         var loader = new WordLoader("../../../../Solver/word_list.txt");
         _calculator = new CandidateCalculator(new WordDictionary(loader), new SilentLogger());
     }
-    
+
     [Test]
     public void 全部確定の絞り込み()
     {
@@ -34,7 +34,7 @@ public class CondidateCalculatorTests
 
         Assert.That(_calculator.Calculate(conditionData), Has.All.StartsWith("st"));
     }
-    
+
     [Test]
     public void 全部並びが違う時の絞り込み()
     {
@@ -49,8 +49,8 @@ public class CondidateCalculatorTests
     {
         var conditionData = new ConditionData();
         conditionData.Add(new WordResult("stamp", "00000"));
-        
-        var candidateWords= _calculator.Calculate(conditionData);
+
+        var candidateWords = _calculator.Calculate(conditionData);
 
         Assert.That(candidateWords, Does.Not.Contain("s")
             .And.Not.Contain("t")
@@ -58,7 +58,7 @@ public class CondidateCalculatorTests
             .And.Not.Contain("m")
             .And.Not.Contain("p"));
     }
-    
+
     [Test]
     public void 一度黄色になったところはその文字ではない()
     {
@@ -69,5 +69,19 @@ public class CondidateCalculatorTests
 
         // すべてのワードがsで始まらない
         Assert.That(candidateWords, Has.All.Not.StartsWith("s"));
+    }
+
+    [Test]
+    public void すでにCorrectになっている文字がNotになった時()
+    {
+        var conditionData = new ConditionData();
+        conditionData.Add(new WordResult("arise", "01001"));
+        conditionData.Add(new WordResult("right", "10000"));
+        conditionData.Add(new WordResult("defer", "02001"));
+
+        var candidateWords = _calculator.Calculate(conditionData);
+
+        // すべてのワードがsで始まらない
+        Assert.That(candidateWords, Has.Some.EqualTo("perky"));
     }
 }
