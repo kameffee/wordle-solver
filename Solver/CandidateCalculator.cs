@@ -6,10 +6,12 @@ namespace Solver;
 public class CandidateCalculator
 {
     private readonly IWordProvider _wordProvider;
+    private readonly ILogger _logger;
 
-    public CandidateCalculator(IWordProvider wordProvider)
+    public CandidateCalculator(IWordProvider wordProvider, ILogger logger)
     {
         _wordProvider = wordProvider;
+        _logger = logger;
     }
 
     public string[] Calculate(ConditionData conditionData)
@@ -48,7 +50,7 @@ public class CandidateCalculator
             notList[characterResult.Index].Add(characterResult.Character);
         }
 
-        Console.WriteLine("Wrond: " + string.Join(',', wrongChars));
+        _logger.Log("Wrond: " + string.Join(',', wrongChars));
 
 
         var notCharArray = wordResult
@@ -64,7 +66,7 @@ public class CandidateCalculator
             notList[i].AddRange(notCharArray);
         }
 
-        Console.WriteLine("Not: " + string.Join(',', notCharArray));
+        _logger.Log("Not: " + string.Join(',', notCharArray));
 
         return _wordProvider.All()
             .Where(word =>

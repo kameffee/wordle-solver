@@ -28,7 +28,7 @@ public class CondidateCalculatorTests
     public void Setup()
     {
         var loader = new WordLoader("../../../../Solver/word_list2.txt");
-        _calculator = new CandidateCalculator(new WordDictionary(loader));
+        _calculator = new CandidateCalculator(new WordDictionary(loader), new SilentLogger());
     }
     
     [Test]

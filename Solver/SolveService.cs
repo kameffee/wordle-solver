@@ -19,7 +19,7 @@ public class SolveService
         _userWordInput = new UserWordInput(_wordDictionary, _logger);
         _userResultInput = new UserResultInput(_logger);
         _resultOutput = new ResultOutput(new ConsoleWrite());
-        _candidateCalculator = new CandidateCalculator(_wordDictionary);
+        _candidateCalculator = new CandidateCalculator(_wordDictionary, _logger);
     }
 
     public void Run()
