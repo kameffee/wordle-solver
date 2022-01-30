@@ -49,6 +49,21 @@ public class CondidateCalculatorTests
 
         Assert.That(_calculator.Calculate(conditionData)[0], Is.EqualTo("stamp"));
     }
+
+    [Test]
+    public void 黒になった文字は全ての箇所に含まれない()
+    {
+        var conditionData = new ConditionData();
+        conditionData.Add(new WordResult("stamp", "00000"));
+        
+        var candidateWords= _calculator.Calculate(conditionData);
+
+        Assert.That(candidateWords, Does.Not.Contain("s")
+            .And.Not.Contain("t")
+            .And.Not.Contain("a")
+            .And.Not.Contain("m")
+            .And.Not.Contain("p"));
+    }
     
     [Test]
     public void 一度黄色になったところはその文字ではない()
