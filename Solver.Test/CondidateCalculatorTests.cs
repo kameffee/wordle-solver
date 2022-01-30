@@ -13,7 +13,7 @@ public class CondidateCalculatorTests
     [OneTimeSetUp]
     public void Setup()
     {
-        var loader = new WordLoader("../../../../Solver/word_list2.txt");
+        var loader = new WordLoader("../../../../Solver/word_list.txt");
         _calculator = new CandidateCalculator(new WordDictionary(loader), new SilentLogger());
     }
     
