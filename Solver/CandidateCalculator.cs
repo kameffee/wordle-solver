@@ -15,6 +15,12 @@ public class CandidateCalculator
     public string[] Calculate(ConditionData conditionData)
     {
         char[] correctChars = new char[5];
+        List<char>[] notList = new List<char>[5];
+        
+        for (var i = 0; i < notList.Length; i++)
+        {
+            notList[i] = new List<char>();
+        }
 
         var wordResult = conditionData.Results;
         var correctResults = wordResult
@@ -34,16 +40,31 @@ public class CandidateCalculator
             .Distinct()
             .ToArray();
 
+        // 一度黄色になった箇所は、その文字はその箇所ではNotとして登録
+        foreach (var characterResult in wordResult
+                     .SelectMany(result => result.CharacterResults)
+                     .Where(result => result.Result == ResultType.Wrong).ToArray())
+        {
+            notList[characterResult.Index].Add(characterResult.Character);
+        }
+
         Console.WriteLine("Wrond: " + string.Join(',', wrongChars));
 
-        char[] notChars = wordResult
+
+        var notCharArray = wordResult
             .SelectMany(result => result.CharacterResults)
             .Where(result => result.Result == ResultType.Not)
             .Select(result => result.Character)
             .Distinct()
             .ToArray();
+        
+        // 全ての箇所にNotとして登録
+        for (var i = 0; i < notList.Length; i++)
+        {
+            notList[i].AddRange(notCharArray);
+        }
 
-        Console.WriteLine("Not: " + string.Join(',', notChars));
+        Console.WriteLine("Not: " + string.Join(',', notCharArray));
 
         return _wordProvider.All()
             .Where(word =>
@@ -64,14 +85,16 @@ public class CandidateCalculator
                     }
                 }
 
-                if (notChars.Any())
+                if (notCharArray.Any())
                 {
-                    // 含まれてはいけない文字
-                    if (target
-                        .Where(targetChar => correctChars.All(correct => correct != targetChar))
-                        .Any(targetChar => notChars.Any(notChar => notChar == targetChar)))
+                    for (var i = 0; i < target.Length; i++)
                     {
-                        return false;
+                        var targetChar = target[i];
+                        var isAny = notList[i].Any(c => c == targetChar);
+                        if (isAny)
+                        {
+                            return false;
+                        }
                     }
                 }
 
