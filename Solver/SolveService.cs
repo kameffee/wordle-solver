@@ -8,7 +8,7 @@ public class SolveService
     private readonly IWordProvider _wordDictionary;
     private readonly UserWordInput _userWordInput;
     private readonly UserResultInput _userResultInput;
-    private readonly ResultOutput _resultOutput = new();
+    private readonly ResultOutput _resultOutput;
     private readonly ConditionData _conditionData = new();
     private readonly CandidateCalculator _candidateCalculator;
 
@@ -18,6 +18,7 @@ public class SolveService
         _wordDictionary = new WordDictionary(new WordLoader(path));
         _userWordInput = new UserWordInput(_wordDictionary, _logger);
         _userResultInput = new UserResultInput(_logger);
+        _resultOutput = new ResultOutput(new ConsoleWrite());
         _candidateCalculator = new CandidateCalculator(_wordDictionary);
     }
 
