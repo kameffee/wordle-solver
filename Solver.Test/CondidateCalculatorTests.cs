@@ -8,23 +8,9 @@ namespace Solver.Test;
 /// </summary>
 public class CondidateCalculatorTests
 {
-    private IWordProvider _wordProvider = new TestWordProvider();
-
-    private class TestWordProvider : IWordProvider
-    {
-        private string[] _words = new[]
-        {
-            "stamp", "value", "right", "strip"
-        };
-
-        public string[] All() => _words;
-
-        public bool Exists(string word) => _words.Any(s => s.Equals(word));
-    }
-
     private CandidateCalculator _calculator;
 
-    [SetUp]
+    [OneTimeSetUp]
     public void Setup()
     {
         var loader = new WordLoader("../../../../Solver/word_list2.txt");
