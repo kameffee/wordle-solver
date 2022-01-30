@@ -1,0 +1,95 @@
+name: Relase
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  workflow_dispatch:
+
+jobs:
+
+  Publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Install dependencies to Solver
+        run: dotnet restore Solver/
+
+      - name: Build
+        run: dotnet build Solver/ --configuration Release --no-restore
+
+      - name: Publish Mac
+        run: |
+          cd Solver/
+          dotnet publish -c Release --self-contained true -r osx-x64
+          
+      - name: Rename Mac
+        run: |
+          cd Solver/bin/Release/net6.0/osx-x64
+          mv publish WordleSolver_osx-x64
+      
+      - name: Zip Mac
+        run: |
+          cd Solver/bin/Release/net6.0/osx-x64
+          zip WordleSolver_osx-x64 WordleSolver_osx-x64/*
+      - name: Publish Win
+        run: |
+          cd Solver/
+          dotnet publish -c Release --self-contained true -r win-x64
+      - name: Rename Win
+        run: |
+          cd Solver/bin/Release/net6.0/win-x64
+          mv publish WordleSolver_win-x64
+      - name: Zip Win
+        run: |
+          cd Solver/bin/Release/net6.0/win-x64
+          zip WordleSolver_win-x64 WordleSolver_win-x64/*
+      
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: true
+          prerelease: false
+
+      - name: Upload Release Asset macOS
+        id: upload-release-asset-osx-x64
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Solver/bin/Release/net6.0/osx-x64/WordleSolver_osx-x64.zip
+          asset_name: "WordleSolver_${{ steps.get_version.outputs.VERSION }}_osx-x64.zip"
+          asset_content_type: application/zip
+          
+      - name: Upload Release Asset Win
+        id: upload-release-asset-win-x64
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: Solver/bin/Release/net6.0/win-x64/WordleSolver_win-x64.zip
+          asset_name: "WordleSolver_${{ steps.get_version.outputs.VERSION }}_win-x64.zip"
+          asset_content_type: application/zip
