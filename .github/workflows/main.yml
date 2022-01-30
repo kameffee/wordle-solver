@@ -1,0 +1,39 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+      - main
+  pull_request:
+    branches:
+      - 'feature/*'
+
+  workflow_dispatch:
+
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Display dotnet version
+        run: dotnet --version
+
+      - name: Install dependencies to Solver
+        run: dotnet restore Solver/
+
+      - name: Build
+        run: dotnet build Solver/ --configuration Release --no-restore
+
+      - name: Install dependencies to Solver.Test
+        run: dotnet restore Solver.Test/
+
+      - name: Test
+        run: dotnet test Solver.Test/ --no-restore --verbosity normal
