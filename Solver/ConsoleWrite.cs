@@ -18,8 +18,8 @@ public class ConsoleWrite : IConsoleOutput
     
     public void WriteWrong(char str)
     {
-        Console.BackgroundColor = _correctBackgroundColor;
-        Console.ForegroundColor = _correctForegroundColor;
+        Console.BackgroundColor = _wrongBackgroundColor;
+        Console.ForegroundColor = _wrongForegroundColor;
         Console.Write(str);
         Console.ResetColor();
     }
