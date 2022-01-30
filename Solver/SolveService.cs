@@ -33,32 +33,21 @@ public class SolveService
         {
             // ワード入力
             var inputWord = _userWordInput.WaitWordInput(i + 1);
-            _logger.Log("");
 
             // 試行結果入力
-            var inputResult = _userResultInput.WaitResultInput().ToCharArray();
+            var inputResult = _userResultInput.WaitResultInput();
 
-            // 試行結果を作成
-            CharacterResult[] characterResults = new CharacterResult[5];
-            for (var i1 = 0; i1 < inputWord.Length; i1++)
-            {
-                char c = inputWord[i1];
-                char num = inputResult[i1];
-                ResultType type = (ResultType)int.Parse(num.ToString(), NumberStyles.None);
-                characterResults[i1] = new CharacterResult(i1, type, c);
-            }
-
-            _conditionData.Add(new WordResult(characterResults));
+            _conditionData.Add(new WordResult(inputWord, inputResult));
 
             // 確認
             _logger.Log($"[{i}]:");
-            _resultOutput.Output(inputWord.ToCharArray(), inputResult);
+            _resultOutput.Output(inputWord.ToCharArray(), inputResult.ToCharArray());
             Console.Write("\n");
             _logger.Log($"----候補----");
             var condidateWords = _candidateCalculator.Calculate(_conditionData);
             _logger.Log(string.Join(',', condidateWords));
         }
-        
+
         _logger.Log("End");
     }
 }
