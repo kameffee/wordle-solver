@@ -38,7 +38,15 @@ public class CondidateCalculatorTests
         conditionData.Add(new WordResult("stamp", "22222"));
 
         Assert.That(_calculator.Calculate(conditionData)[0], Is.EqualTo("stamp"));
-        Assert.Pass();
+    }
+
+    [Test]
+    public void 一部確定の絞り込み()
+    {
+        var conditionData = new ConditionData();
+        conditionData.Add(new WordResult("stamp", "22000"));
+
+        Assert.That(_calculator.Calculate(conditionData), Has.All.StartsWith("st"));
     }
     
     [Test]
