@@ -33,7 +33,7 @@ jobs:
       - name: Publish Mac
         run: |
           cd Solver/
-          dotnet publish -c Release --self-contained true -r osx-x64
+          dotnet publish -c Release --self-contained true -r osx-x64 -p:PublishTrimmed=true
           
       - name: Copy WordList Mac
         run: |
@@ -52,7 +52,7 @@ jobs:
       - name: Publish Win
         run: |
           cd Solver/
-          dotnet publish -c Release --self-contained true -r win-x64
+          dotnet publish -c Release --self-contained true -r win-x64 -p:PublishTrimmed=true
           
       - name: Copy WordList Win
         run: |
