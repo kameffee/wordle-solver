@@ -35,6 +35,10 @@ jobs:
           cd Solver/
           dotnet publish -c Release --self-contained true -r osx-x64
           
+      - name: Copy WordList Mac
+        run: |
+          cp Solver/word_list.txt Solver/bin/Release/net6.0/osx-x64/publish/word_list.txt
+          
       - name: Rename Mac
         run: |
           cd Solver/bin/Release/net6.0/osx-x64
@@ -44,14 +48,21 @@ jobs:
         run: |
           cd Solver/bin/Release/net6.0/osx-x64
           zip WordleSolver_osx-x64 WordleSolver_osx-x64/*
+
       - name: Publish Win
         run: |
           cd Solver/
           dotnet publish -c Release --self-contained true -r win-x64
+          
+      - name: Copy WordList Win
+        run: |
+          cp Solver/word_list.txt Solver/bin/Release/net6.0/win-x64/publish/word_list.txt
+
       - name: Rename Win
         run: |
           cd Solver/bin/Release/net6.0/win-x64
           mv publish WordleSolver_win-x64
+
       - name: Zip Win
         run: |
           cd Solver/bin/Release/net6.0/win-x64
